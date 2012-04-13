@@ -1,0 +1,77 @@
+body {
+  color: #fff;
+  font-size: 1em;
+  font-family: "Avenir Light", Helvetica, Arial, sans-serif;
+  background: #1b1b1b;
+  text-align: center;
+  min-width: 528px;
+}
+a {
+  color: #02ADDB;
+  text-decoration: none;
+}
+a:hover {
+  color: #41D7FF;
+}
+h1 {
+  font-family: "Courier New", "Courier", monospace;
+  font-size: 32px;
+  font-weight: normal;
+  line-height: 46px;
+  margin: 32px 0 18px;
+}
+p {
+  line-height: 1;
+  margin: 0;
+}
+div#pageContainer {
+  width: 528px;
+  margin: 0 auto;
+}
+canvas#stage {
+  width: 400px;
+  height: 300px;
+  background-color: #efefef;
+  box-shadow: 0px 0px 12px #02ADDB;
+}
+div.tag {
+  width: 400px;
+  margin: 0 auto;
+}
+div.tag p.title {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+div.tag p.short {
+  font-size: 18px;
+  line-height: 27px;
+  text-align: right;
+  margin-bottom: 24px;
+}
+div.tag summary {
+  color: #dddddd;
+  font-size: 15px;
+  line-height: 16px;
+  text-align: justify;
+}
+div.tag details {
+  color: #dddddd;
+  font-size: 12px;
+  line-height: 1.25;
+  text-align: justify;
+  margin-top: 3px;
+}
+footer {
+  width: 528px;
+  margin-top: 34px;
+  border-top: 3px double #efefef;
+}
+footer p {
+  font-size: 15px;
+  line-height: 16px;
+  margin-top: 11px;
+  margin-bottom: 16px;
+}
