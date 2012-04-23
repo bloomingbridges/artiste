@@ -1,16 +1,19 @@
 
 // Create the loader and queue images. Images will not 
 // begin downloading until we tell the loader to start. 
-var loader = new PxLoader(); 
-var girSheetImg = loader.addImage('assets/girsheet.png');
+//var loader = new PxLoader(); 
+//var girSheetImg = loader.addImage('assets/girsheet.png');
 
-var canvas, ctx, bounds, stage, gir;
+var canvas, ctx, bounds, stage;
+var States = { IDLE: 0, HUNTING: 1, CREDITS: 2 };
+var gir;
  
 var init = function() { 
     canvas = document.getElementById('stage');
     ctx = canvas.getContext('2d'); 
  
-    $('canvas').attr('width', $('canvas').css('width')).attr('height', $('canvas').css('height'));
+    $('canvas').attr('width', $('canvas').css('width'));
+    $('canvas').attr('height', $('canvas').css('height'));
 
     console.log('ASSETS READY - INIT MOVIE');
 
@@ -42,5 +45,5 @@ function tick() {
 	stage.update();
 }
 
-loader.addCompletionListener(init); 
-loader.start(); 
+//loader.addCompletionListener(init); 
+//loader.start(); 

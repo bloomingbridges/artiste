@@ -23,7 +23,7 @@ __Before..__
 [id_1]: http://dl.dropbox.com/u/998319/artiste_before.png
 [id_2]: http://dl.dropbox.com/u/998319/artiste_before.jpg
 
-<br />
+# <br />
 
 __and After the build process:__
 

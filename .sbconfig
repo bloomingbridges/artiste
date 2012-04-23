@@ -20,4 +20,4 @@ WARNING_LEVEL = VERBOSE
 COMPILER_ARGS = '--debug'
 
 # Regex for files to remove
-REMOVE = \.less$|vertical_rhythm.png$
+REMOVE = \.less$|vertical_rhythm.png$|refunk.css$

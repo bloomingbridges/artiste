@@ -59,6 +59,7 @@ div.tag summary {
 }
 div.tag details {
   color: #dddddd;
+  height: 30px;
   font-size: 12px;
   line-height: 1.25;
   text-align: justify;
