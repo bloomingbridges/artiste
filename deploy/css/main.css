@@ -4,7 +4,7 @@ body {
   font-family: "Avenir Light", Helvetica, Arial, sans-serif;
   background: #1b1b1b;
   text-align: center;
-  min-width: 528px;
+  min-width: 928px;
 }
 a {
   color: #02ADDB;
@@ -25,24 +25,25 @@ p {
   margin: 0;
 }
 div#pageContainer {
-  width: 528px;
+  width: 928px;
   margin: 0 auto;
 }
 canvas#stage {
-  width: 400px;
-  height: 300px;
+  width: 800px;
+  height: 450px;
   background-color: #efefef;
   box-shadow: 0px 0px 12px #02ADDB;
+  cursor: url(../assets/taco.png), auto;
 }
 div.tag {
-  width: 400px;
+  width: 800px;
   margin: 0 auto;
 }
 div.tag p.title {
   font-size: 32px;
   font-weight: bold;
   text-align: right;
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 8px;
 }
 div.tag p.short {
@@ -66,7 +67,7 @@ div.tag details {
   margin-top: 3px;
 }
 footer {
-  width: 528px;
+  width: 928px;
   margin-top: 34px;
   border-top: 3px double #efefef;
 }
