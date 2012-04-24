@@ -67,7 +67,9 @@
 
 var StateMachine = {
 	states: {},
-	currentState: null,
+	currentState: {},
+	nextState: {},
+	transitioning: false,
 	registerStates: function(stateArray, autoStart) {
 		StateMachine.states = stateArray;
 		if(autoStart){
@@ -76,25 +78,50 @@ var StateMachine = {
 		}
 	},
 	update: function() {
-		if(StateMachine.currentState !== null){
+		if(StateMachine.currentState instanceof State){
+			if(StateMachine.transitioning === true){
+				StateMachine.currentState.disappear();
+				StateMachine.nextState.appear();
+			}
+			else if(StateMachine.transitioning === 'ready'){
+				StateMachine.transitioning = false;
+				console.log('Transition finished!');
+				stage.removeChild(StateMachine.currentState.subStage);
+				StateMachine.currentState = StateMachine.nextState;
+			}
 			StateMachine.currentState.update();
 		}
 	},
 	switchTo: function(newState) {
 		console.log('Switching to: ' + newState);
+		if(StateMachine.currentState instanceof State){
+			StateMachine.currentState.destroy();
+		}
 		StateMachine.currentState = new StateMachine.states[newState](false);
+	},
+	transitionTo: function(nextState) {
+		console.log('Transitioning to: ' + nextState);
+		StateMachine.nextState = new StateMachine.states[nextState](false);
+		StateMachine.transitioning = true;
+	},
+	endTransition: function() {
+		StateMachine.transitioning = 'ready';
 	}
 }
 
 var State = Class.extend({
 
+	subStage: {},
+
 	init: function(data) {
 		
-		// TODO Manage subStage creation at this point
+		subStage = new Container();
+		stage.addChild(subStage);
 
 		if(data && typeof data === 'object'){
 			console.log('constructing state..');		
 		}
+
 	},
 
 	update: function() {
@@ -109,111 +136,9 @@ var State = Class.extend({
 		// I'm an animation loop, you might want to override me
 	},
 
-});
-
-var IntroState = State.extend({
-
-	init: function(){
-		this._super( false );
-		gir.gotoAndPlay('walk');
-	},
-	
-	update: function(){
-		if(gir.x > bounds.width / 2){
-			gir.x -= 2;
-		}
-		else {
-			StateMachine.switchTo('PLAY');
-		}
-	},
-
-});
-
-var PlayState = State.extend({
-
-	init: function() {
-		this._super(false);
-		gir.gotoAndPlay('idle');
-		
-		// TODO Use Easel Mouse API instead?
-
-		$('#stage').mouseover(function() {
-			gir.gotoAndPlay('walk');
-		});
-
-		$('#stage').mouseleave(function() {
-			gir.gotoAndStop(0);	
-		});
-		$('#stage').click(function() {
-			StateMachine.switchTo('CREDITS');
-		});
+	destroy: function() {
+		//subStage.removeAllChildren();
+		stage.removeChild(subStage);
 	}
-
-});
-
-var CreditsState = State.extend({
-
-	init: function(){
-		this._super( false );
-		$('#stage').unbind('mouseover').unbind('mouseleave').unbind('click');
-		if(!credits){
-			credits = new Container();
-
-			var shape = new Shape();
-
-			var g = new Graphics();
-			g.beginFill(Graphics.getRGB(176,105,199));
-			g.rect(0,0,bounds.width,bounds.height);
-			shape.graphics = g;
-
-			credits.addChild(shape);
-
-			var text = new Text('Mmmmmm tacos!', 'normal 32px Helvetica', 'white');
-			text.width = bounds.width;
-			text.textAlign = "center";
-			text.x = bounds.width / 2;
-			text.y = bounds.height / 2 - 16;
-
-			var textShadow = new Shadow(Graphics.getRGB(150,20,199), 0, 2, 1);
-			text.shadow = textShadow;
-
-			credits.addChild(text);
-
-			var text2 = new Text('Click to restart', 'normal 16px Helvetica', 'white');
-			text2.width = bounds.width;
-			text2.textAlign = "center";
-			text2.x = bounds.width / 2;
-			text2.y = text.y + 36;
-			text2.alpha = 0.9;
-			credits.addChild(text2);
-
-			credits.x = bounds.width;
-			stage.addChild(credits);
-		}
-		else {
-			credits.x = bounds.width;
-			credits.y = 0;
-			credits.alpha = 1.0;
-		}
-
-		$('#stage').click(function() {
-			if(credits.x == 0){
-				$('#stage').unbind('click');
-				Tween.get(credits).to({ y: -bounds.height, alpha: 0.0 }, 1000, Ease.cubicOut).call(function() {
-					gir.x = bounds.width + 180;
-					StateMachine.switchTo('INTRO');
-				});
-			}
-		});
-	},
-	
-	update: function(){
-		if(gir.x > -180){
-			gir.x -= 2;
-		}
-		if(credits.getStage() != null && credits.x > 0){
-			credits.x -= 2;
-		}
-	},
 
 });

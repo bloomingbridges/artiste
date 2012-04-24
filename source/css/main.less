@@ -1,8 +1,8 @@
 
-@page_width:      800px;
+@page_width:      540px;
 @container_width: @page_width + 128px;
-@aspect_width:    16;
-@aspect_height:   9;
+@aspect_width:    4;
+@aspect_height:   3;
 @canvas_width:    @page_width;
 @canvas_height:   @aspect_height * @canvas_width / @aspect_width;
 
@@ -46,7 +46,11 @@ canvas#stage {
 			  height: @canvas_height;
 	background-color: #efefef;
 		  box-shadow: 0px 0px 12px #02ADDB;
-		  cursor: url(../assets/taco.png), auto;
+		  cursor: pointer, auto;
+}
+
+canvas#stage.taco {
+	cursor: url(../assets/taco.png), auto;
 }
 
 div.tag {
