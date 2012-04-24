@@ -44,7 +44,7 @@ div.tag {
 }
 div.tag p.title {
   font-size: 32px;
-  font-weight: bold;
+  font-weight: normal;
   text-align: right;
   margin-top: 43px;
   margin-bottom: 8px;
