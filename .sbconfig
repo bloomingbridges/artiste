@@ -7,14 +7,11 @@ DEPLOY_PATH = deploy
 # Break line at this column (0 breaks after each rule)
 # CSS_LINE_BREAK = 0
 
-# Externs file for Closure compiler
-EXTERNS_FILES = 'js/lib/PxLoader.js'
-
 # Closure compiler compilation level
 COMPILATION_LEVEL = SIMPLE_OPTIMIZATIONS
 
 # Closure compiler warning level
-WARNING_LEVEL = DEFAULT
+WARNING_LEVEL = QUIET
 
 # Any additional arguments
 # COMPILER_ARGS = '--debug'

@@ -8,8 +8,10 @@
 
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
+		<!-- sb: minify css/style.css -->
 		<link rel="stylesheet" media="screen" href="css/normalize.css" />
 		<link rel="stylesheet" media="all" href="css/main.css" />
+		<!-- sb: end -->
 		<!-- sb: hide -->
 		<style type="text/css">
 			body { 
@@ -39,18 +41,23 @@
 				<p>2012 <a href="http://www.bloomingbridges.co.uk">bloomingbridges</a></p>
 			</footer>
 		</div>
-		
-		<!-- sb: concat js/lib/preload.js -->
+
+		<!-- sb: compile js/girlovestacos.js -->
+
 		<script type="text/javascript" src="js/lib/PxLoader.js"></script>
 		<script type="text/javascript" src="js/lib/PxLoaderImage.js"></script>
 		<script type="text/javascript" src="js/lib/PxLoaderSound.js"></script>
-		<!-- sb: end -->
 
-		<!-- sb: compile js/lib/artiste.js -->
 		<script type="text/javascript" src="js/lib/Class.js"></script>
 		<script type="text/javascript" src="js/lib/Atelier.js"></script>
-		<!-- sb: end -->
 
-		<script type="text/javascript" src="js/girlovestacos.js"></script>
+		<script type="text/javascript" src="js/states/IntroState.js"></script>
+		<script type="text/javascript" src="js/states/PlayState.js"></script>
+		<script type="text/javascript" src="js/states/CreditsState.js"></script>
+
+		<script type="text/javascript" src="js/script.js"></script>
+		
+		<!-- sb: end -->
+		
 	</body>
 </html>
