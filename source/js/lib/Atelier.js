@@ -9,7 +9,7 @@ var Souvenirs = {
 	sprites: {},
 	enqueue: function(id, path) {	
 		this.assets[id] = loader.addImage(path);
-		//console.log(id + ' has been enqueued for preloading.');
+		console.log(id + ' has been enqueued for preloading.');
 	},
 	retrieve: function(id) {
 		if(id in this.assets){
@@ -21,7 +21,7 @@ var Souvenirs = {
 	},
 	register: function(id, sprite) {
 		this.sprites[id] = sprite;
-		//console.log('Sprite has been registered.');
+		console.log('Sprite has been registered.');
 	},
 	clone: function(id) {
 		if(id in this.sprites){
@@ -74,7 +74,7 @@ var StateMachine = {
 	endTransition: function() {
 		this.transitioning = 'ready';
 	}
-}
+};
 
 var State = Class.extend({
 

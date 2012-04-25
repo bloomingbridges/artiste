@@ -1,24 +1,52 @@
 
 // Globals
 
-var canvas, ctx, bounds, stage, mouseInside;
+var canvas, bounds, stage, mouseInside;
 var loader = new PxLoader(); 
 
 var init = function() { 
 
     canvas = document.getElementById('stage');
-    ctx = canvas.getContext('2d'); 
- 
-    $('canvas').attr('width', $('canvas').css('width'));
-    $('canvas').attr('height', $('canvas').css('height'));
+    $(canvas).attr('width', $('canvas').css('width'));
+    $(canvas).attr('height', $('canvas').css('height'));
+    $(canvas).mouseover(function() {
+		mouseInside = true;
+	});
+	$(canvas).mouseleave(function() {
+		mouseInside = false;
+	});
 
-    bounds = new Rectangle();
+	bounds = new Rectangle();
 	bounds.width = canvas.width;
 	bounds.height = canvas.height;
+    stage = new Stage(canvas);
 
-	stage = new Stage(canvas);
+    /*  In here I manually construct ALL the 'BitmapAnimation's needed and store them in Souvenirs
+	 *  Hopefully one day this process will be automated..
+	 */
+	assembleSprites();
 
-	// Creation of Sprites
+	/*  StateMachine.registerStates(stateArray, autoPlay);
+	 *  autoPlay can either be true (beginning), false or a key in stateArray e.g. 'CREDITS'
+	 */
+	StateMachine.registerStates({ 
+		  'INTRO': IntroState, 
+		   'PLAY': PlayState, 
+		'CREDITS': CreditsState 
+	}, true);
+
+	Ticker.addListener(window);
+	Ticker.useRAF = true;
+	Ticker.setInterval(1000/60);
+
+}
+
+function tick() {
+	StateMachine.update();
+	stage.update();
+}
+
+function assembleSprites() {
 
 	var gir = new BitmapAnimation(
 		new SpriteSheet(
@@ -32,6 +60,15 @@ var init = function() {
 	gir.snapToPixel = true;
 
 	Souvenirs.register('gir', gir);
+
+	/ * ==================================================================================== * /
+
+	var taco = new Bitmap( Souvenirs.assets.tacoImg );
+	taco.regX = 31; taco.regY = 50;
+
+	Souvenirs.register('taco', taco);
+
+	/ * ==================================================================================== * /
 
 	var credits = new Container();
 
@@ -65,24 +102,6 @@ var init = function() {
 
 	Souvenirs.register('credits', credits);
 
-	/*  StateMachine.registerStates(stateArray, autoPlay);
-	 *  autoPlay can either be true, false or key in stateArray e.g. 'INTRO'
-	 */
-	StateMachine.registerStates({ 
-		  'INTRO': IntroState, 
-		   'PLAY': PlayState, 
-		'CREDITS': CreditsState 
-	}, true);
-
-	Ticker.addListener(window);
-	Ticker.useRAF = true;
-	Ticker.setInterval(25);
-
-}
-
-function tick() {
-	StateMachine.update();
-	stage.update();
 }
 
 function preloadAssets(onComplete) {	
@@ -92,4 +111,5 @@ function preloadAssets(onComplete) {
 }
 
 Souvenirs.enqueue('girSheetImg', './assets/girsheet.png');
+Souvenirs.enqueue('tacoImg', './assets/taco.png');
 preloadAssets(false);

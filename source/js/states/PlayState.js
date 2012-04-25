@@ -20,6 +20,10 @@ var PlayState = State.extend({
 		$('#stage').addClass('taco');
 	},
 
+	appear: function(){
+		this._super();
+	},
+
 	update: function() {
 		if(mouseInside){
 			if(this.gir.currentAnimation === 'idle'){
@@ -35,6 +39,10 @@ var PlayState = State.extend({
 		if(this.gir.x > -180){
 			this.gir.x -= 2;
 		}
+	},
+
+	destroy: function() {
+		this._super();
 	}
 
 });

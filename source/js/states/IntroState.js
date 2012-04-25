@@ -8,15 +8,10 @@ var IntroState = State.extend({
 		this.gir.x = bounds.width + 90;
 		this.gir.y = bounds.height / 2;
 		this.gir.gotoAndPlay('walk');
+	},
 
-		$('#stage').mouseover(function() {
-			mouseInside = true;
-		});
-
-		$('#stage').mouseleave(function() {
-			mouseInside = false;
-		});
-
+	appear: function(){
+		this._super();
 	},
 	
 	update: function(){
@@ -26,6 +21,10 @@ var IntroState = State.extend({
 		else {
 			StateMachine.switchTo('PLAY');
 		}
+	},
+
+	disappear: function(){
+		this._super();
 	},
 
 	destroy: function() {
