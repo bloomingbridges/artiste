@@ -368,3 +368,192 @@ if (!Array.prototype.indexOf) {
         return -1;
     };
 }
+// @depends PxLoader.js
+
+/**
+ * PxLoader plugin to load images
+ */
+function PxLoaderImage(url, tags, priority) {
+    var self = this,
+        loader = null;
+
+    this.img = new Image();
+    this.tags = tags;
+    this.priority = priority;
+
+    var onReadyStateChange = function () {
+        if (self.img.readyState == 'complete') {
+            removeEventHandlers();
+            loader.onLoad(self);
+        }
+    };
+
+    var onLoad = function() {
+        removeEventHandlers();
+        loader.onLoad(self);
+    };
+
+    var onError = function() {
+        removeEventHandlers();
+        loader.onError(self);
+    };
+
+    var removeEventHandlers = function() {
+        self.unbind('load', onLoad);
+        self.unbind('readystatechange', onReadyStateChange);
+        self.unbind('error', onError);
+    };
+
+    this.start = function(pxLoader) {
+        // we need the loader ref so we can notify upon completion
+        loader = pxLoader;
+
+        // NOTE: Must add event listeners before the src is set. We
+        // also need to use the readystatechange because sometimes
+        // load doesn't fire when an image is in the cache.
+        self.bind('load', onLoad);
+        self.bind('readystatechange', onReadyStateChange);
+        self.bind('error', onError);
+
+        self.img.src = url;
+    };
+
+    // called by PxLoader to check status of image (fallback in case
+    // the event listeners are not triggered).
+    this.checkStatus = function() {
+        if (self.img.complete) {
+            removeEventHandlers();
+            loader.onLoad(self);
+        }
+    };
+
+    // called by PxLoader when it is no longer waiting
+    this.onTimeout = function() {
+        removeEventHandlers();
+        if (self.img.complete) {
+            loader.onLoad(self);
+        }
+        else {
+            loader.onTimeout(self);
+        }
+    };
+
+    // returns a name for the resource that can be used in logging
+    this.getName = function() {
+        return url;
+    };
+    
+	// cross-browser event binding
+    this.bind = function(eventName, eventHandler) {
+        if (self.img.addEventListener) {
+            self.img.addEventListener(eventName, eventHandler, false); 
+        } else if (self.img.attachEvent) {
+            self.img.attachEvent('on'+eventName, eventHandler);
+        }
+    };
+
+	// cross-browser event un-binding
+    this.unbind = function(eventName, eventHandler) {
+        if (self.img.removeEventListener) {
+            self.img.removeEventListener(eventName, eventHandler, false);
+        } else if (self.img.detachEvent) {
+            self.img.detachEvent('on'+eventName, eventHandler);
+        }
+    };
+
+}
+
+// add a convenience method to PxLoader for adding an image
+PxLoader.prototype.addImage = function(url, tags, priority) {
+    var imageLoader = new PxLoaderImage(url, tags, priority);
+    this.add(imageLoader);
+
+    // return the img element to the caller
+    return imageLoader.img;
+};
+
+// @depends PxLoader.js
+
+/**
+ * PxLoader plugin to load sound using SoundManager2
+ */
+function PxLoaderSound(id, url, tags, priority) {
+    var self = this,
+        loader = null;
+
+    this.tags = tags;
+    this.priority = priority;
+    this.sound = soundManager['createSound']({
+        'id': id,
+        'url': url,
+        'autoLoad': false,
+        'onload': function() { loader.onLoad(self); },
+
+        // HTML5-only event: Fires when a browser has chosen to stop downloading.
+        // "The user agent is intentionally not currently fetching media data,
+        // but does not have the entire media resource downloaded."
+        'onsuspend': function() { loader.onTimeout(self); },
+
+        // Fires at a regular interval when a sound is loading and new data
+        // has been received.
+        'whileloading': function() {
+            var bytesLoaded = this['bytesLoaded'],
+                bytesTotal = this['bytesTotal'];
+
+            // TODO: provide percentage complete updates to loader?
+
+            // see if we have loaded the file
+            if (bytesLoaded > 0 && (bytesLoaded === bytesTotal)) {
+                loader.onLoad(self);
+            }
+        }
+    });
+
+    this.start = function(pxLoader) {
+        // we need the loader ref so we can notify upon completion
+        loader = pxLoader;
+
+        // On iOS, soundManager2 uses a global audio object so we can't
+        // preload multiple sounds. We'll have to hope they load quickly
+        // when we need to play them. Unfortunately, SM2 doesn't expose
+        // a property to indicate its using a global object. For now we'll
+        // use the same test they do: only when on an iDevice
+        var iDevice = navigator.userAgent.match(/(ipad|iphone|ipod)/i);
+        if (iDevice) {
+            loader.onTimeout(self);
+        }
+        else {
+            this.sound['load']();
+        }
+    };
+
+    this.checkStatus = function() {
+        switch(self.sound['readyState']) {
+            case 0: // uninitialised
+            case 1: // loading
+                break;
+            case 2: // failed/error
+                loader.onError(self);
+                break;
+            case 3: // loaded/success
+                loader.onLoad(self);
+                break;
+        }
+    };
+
+    this.onTimeout = function() {
+        loader.onTimeout(self);
+    };
+
+    this.getName = function() {
+        return url;
+    }
+}
+
+// add a convenience method to PxLoader for adding a sound
+PxLoader.prototype.addSound = function(id, url, tags, priority) {
+    var soundLoader = new PxLoaderSound(id, url, tags, priority);
+    this.add(soundLoader);
+    return soundLoader.sound;
+};
+

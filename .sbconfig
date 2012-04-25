@@ -5,19 +5,19 @@ SOURCE_PATH = source
 DEPLOY_PATH = deploy
 
 # Break line at this column (0 breaks after each rule)
-CSS_LINE_BREAK = 0
+# CSS_LINE_BREAK = 0
 
 # Externs file for Closure compiler
-EXTERNS_FILES = js/externs.js
+EXTERNS_FILES = 'js/lib/PxLoader.js'
 
 # Closure compiler compilation level
-COMPILATION_LEVEL = ADVANCED_OPTIMIZATIONS
+COMPILATION_LEVEL = SIMPLE_OPTIMIZATIONS
 
 # Closure compiler warning level
-WARNING_LEVEL = VERBOSE
+WARNING_LEVEL = DEFAULT
 
 # Any additional arguments
-COMPILER_ARGS = '--debug'
+# COMPILER_ARGS = '--debug'
 
 # Regex for files to remove
 REMOVE = \.less$|vertical_rhythm.png$|refunk.css$

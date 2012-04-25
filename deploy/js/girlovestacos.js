@@ -54,7 +54,7 @@ var PlayState = State.extend({
 		this.subStage.addChild(this.gir);
 		this.gir.gotoAndPlay('idle');
 		
-		// TODO Use Easel Mouse API instead?
+		// TODO Use Easel MouseEvent API instead?
 
 		$('#stage').click(function() {
 			$('#stage').removeClass('taco');
