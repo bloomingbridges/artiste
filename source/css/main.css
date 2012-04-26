@@ -4,7 +4,7 @@ body {
   font-family: "Avenir Light", Helvetica, Arial, sans-serif;
   background: #1b1b1b;
   text-align: center;
-  min-width: 668px;
+  min-width: 648px;
 }
 a {
   color: #02ADDB;
@@ -18,19 +18,30 @@ h1 {
   font-size: 32px;
   font-weight: normal;
   line-height: 46px;
-  margin: 32px 0 18px;
+  margin: 0 0 18px 0;
+}
+h1 a {
+  color: #333;
+  -webkit-transition: all 1s ease-in-out;
+}
+h1 a:hover {
+  color: #eee;
+  text-shadow: 0 0 5px #41D7FF;
 }
 p {
   line-height: 1;
   margin: 0;
 }
 div#pageContainer {
-  width: 668px;
-  margin: 0 auto;
+  width: 648px;
+  margin: 32px auto 0 auto;
+}
+header {
+  height: 64px;
 }
 canvas#stage {
-  width: 540px;
-  height: 405px;
+  width: 520px;
+  height: 390px;
   background-color: #efefef;
   box-shadow: 0px 0px 12px #02ADDB;
   cursor: pointer, auto;
@@ -39,14 +50,14 @@ canvas#stage.taco {
   cursor: url(../assets/taco.png), auto;
 }
 div.tag {
-  width: 540px;
+  width: 520px;
   margin: 0 auto;
 }
 div.tag p.title {
   font-size: 32px;
   font-weight: normal;
   text-align: right;
-  margin-top: 43px;
+  margin-top: 26px;
   margin-bottom: 8px;
 }
 div.tag p.short {
@@ -70,7 +81,7 @@ div.tag details {
   margin-top: 3px;
 }
 footer {
-  width: 668px;
+  width: 648px;
   margin-top: 34px;
   border-top: 3px double #efefef;
 }

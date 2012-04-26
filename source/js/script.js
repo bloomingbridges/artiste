@@ -6,7 +6,6 @@ var loader = new PxLoader();
 
 var init = function() { 
 
-    canvas = document.getElementById('stage');
     $(canvas).attr('width', $('canvas').css('width'));
     $(canvas).attr('height', $('canvas').css('height'));
     $(canvas).mouseover(function() {
@@ -30,9 +29,9 @@ var init = function() {
 	 *  autoPlay can either be true (beginning), false or a key in stateArray e.g. 'CREDITS'
 	 */
 	StateMachine.registerStates({ 
-		  'INTRO': IntroState, 
-		   'PLAY': PlayState, 
-		'CREDITS': CreditsState 
+		  'INTRO': { state: IntroState, blueprint: {} },
+		   'PLAY': { state: PlayState, blueprint: {} },
+		'CREDITS': { state: CreditsState }
 	}, true);
 
 	Ticker.addListener(window);
@@ -92,7 +91,7 @@ function assembleSprites() {
 
 	credits.addChild(text);
 
-	var text2 = new Text('Click to restart', 'normal 16px Helvetica', 'white');
+	var text2 = new Text('Click to start over', 'normal 16px Helvetica', 'white');
 	text2.width = bounds.width;
 	text2.textAlign = "center";
 	text2.x = bounds.width / 2;
@@ -110,6 +109,17 @@ function preloadAssets(onComplete) {
 	loader.start(); 
 }
 
-Souvenirs.enqueue('girSheetImg', './assets/girsheet.png');
-Souvenirs.enqueue('tacoImg', './assets/taco.png');
-preloadAssets(false);
+// Before you proceed, you might want to make sure that the canvas element is supported at all.
+
+canvas = document.getElementById('stage');
+if(canvas.getContext('2d')){
+	Souvenirs.enqueue('girSheetImg', './assets/girsheet.png');
+	Souvenirs.enqueue('tacoImg', './assets/taco.png');
+	preloadAssets(false);
+}
+else {
+	// Display a gnarly message or use your polyfill of choice
+	alert("Your browser doesn't support the canvas element and I couldn't care less.");
+}
+
+

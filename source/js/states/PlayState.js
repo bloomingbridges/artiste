@@ -1,7 +1,7 @@
 var PlayState = State.extend({
 
-	init: function() {
-		this._super(false);
+	init: function( blueprint ) {
+		this._super( blueprint );
 
 		this.gir = Souvenirs.clone('gir');
 		this.gir.x = bounds.width / 2;

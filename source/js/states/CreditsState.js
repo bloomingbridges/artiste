@@ -1,7 +1,7 @@
 var CreditsState = State.extend({
 
-	init: function(){
-		this._super( false );
+	init: function( blueprint ){
+		this._super( blueprint );
 
 		this.credits = Souvenirs.clone('credits');
 		this.subStage.x = bounds.width;
@@ -12,7 +12,7 @@ var CreditsState = State.extend({
 		for(var t=0; t<=9; t++){
 			var tempTaco;
 			tempTaco = Souvenirs.clone('taco');
-			tempTaco.x = 120 + (Math.random() * bounds.width - 120);
+			tempTaco.x = 45 + Math.random() * (bounds.width - 120);
 			tempTaco.y = -100;
 			tempTaco.vY = 5 + Math.floor(Math.random() * 5);
 			tempTaco.rotation = Math.floor(Math.random() * 360);
@@ -28,7 +28,7 @@ var CreditsState = State.extend({
 		}
 		else{
 			$('#stage').click(function() {
-				Tween.get(StateMachine.currentState.credits)
+				Tween.get(StateMachine.currentState.subStage)
 					 .to({ y: -bounds.height, alpha: 0.0 }, 1000, Ease.cubicOut)
 					 .call(function() {
 						$('#stage').unbind('click');
@@ -36,13 +36,19 @@ var CreditsState = State.extend({
 					});
 			});
 			StateMachine.endTransition();
-			console.log(this.tacoArray);
 		}
 	},
 
 	update: function(){
 		for(var t=0; t<=9; t++){
-			this.tacoArray[t].y += this.tacoArray[t].vY;
+			var tempTaco = this.tacoArray[t];
+			tempTaco.y += tempTaco.vY;
+			if(tempTaco.y > bounds.height * 2){
+				tempTaco.x = 45 + Math.random() * (bounds.width - 120);
+				tempTaco.y = -100;
+				tempTaco.vY = 5 + Math.floor(Math.random() * 5);
+				tempTaco.rotation = Math.floor(Math.random() * 360);
+			}
 		}
 	},
 

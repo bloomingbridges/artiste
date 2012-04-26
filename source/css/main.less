@@ -1,5 +1,5 @@
 
-@page_width:      540px;
+@page_width:      520px;
 @container_width: @page_width + 128px;
 @aspect_width:    4;
 @aspect_height:   3;
@@ -28,7 +28,14 @@ h1 {
 	    font-size: 32px;
 	  font-weight: normal;
 	  line-height: 46px;
-	       margin: 32px 0 18px;
+	       margin: 0 0 18px 0;
+
+	a { 
+					 color: #333;
+		-webkit-transition: all 1s ease-in-out;
+		&:hover { color: #eee; text-shadow: 0 0 5px #41D7FF; }
+	}
+
 }
 
 p {
@@ -38,7 +45,11 @@ p {
 
 div#pageContainer {
      width: @container_width;
-    margin: 0 auto;
+    margin: 32px auto 0 auto;
+}
+
+header {
+	height: 64px;
 }
 
 canvas#stage {

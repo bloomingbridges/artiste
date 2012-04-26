@@ -4,31 +4,34 @@
  * MIT Licensed.
  */
 
-var Souvenirs = {
-	 assets: {},
-	sprites: {},
-	enqueue: function(id, path) {	
-		this.assets[id] = loader.addImage(path);
-		console.log(id + ' has been enqueued for preloading.');
-	},
-	retrieve: function(id) {
-		if(id in this.assets){
-			return this.assets[id];
+(function(window) {
+	var Souvenirs = {
+		 assets: {},
+		sprites: {},
+		enqueue: function(id, path) {	
+			this.assets[id] = loader.addImage(path);
+			console.log(id + ' has been enqueued for preloading.');
+		},
+		retrieve: function(id) {
+			if(id in this.assets){
+				return this.assets[id];
+			}
+			else {
+				throw "Asset doesn't exist :<";
+			}
+		},
+		register: function(id, sprite) {
+			this.sprites[id] = sprite;
+			console.log('Sprite has been registered.');
+		},
+		clone: function(id) {
+			if(id in this.sprites){
+				return this.sprites[id].clone(true);
+			}
 		}
-		else {
-			throw "Asset doesn't exist :<";
-		}
-	},
-	register: function(id, sprite) {
-		this.sprites[id] = sprite;
-		console.log('Sprite has been registered.');
-	},
-	clone: function(id) {
-		if(id in this.sprites){
-			return this.sprites[id].clone(true);
-		}
-	}
-};
+	};
+	window.Souvenirs = Souvenirs;
+}(window));
 
 var StateMachine = {
 	states: {},
@@ -64,11 +67,15 @@ var StateMachine = {
 		if(this.currentState instanceof State){
 			this.currentState.destroy();
 		}
-		this.currentState = new this.states[newState]();
+		var state = this.states[newState].state;
+		var blueprint = this.states[newState].blueprint;
+		this.currentState = new state(blueprint);
 	},
 	transitionTo: function(nextState) {
 		console.log('Transitioning to: ' + nextState);
-		this.nextState = new this.states[nextState]();
+		var state = this.states[nextState].state;
+		var blueprint = this.states[nextState].blueprint;
+		this.nextState = new state(blueprint);
 		this.transitioning = true;
 	},
 	endTransition: function() {
@@ -81,11 +88,14 @@ var State = Class.extend({
 	init: function(blueprint) {
 		
 		this.subStage = new Container();
-		this.layout = blueprint;
 		stage.addChild(this.subStage);
 
 		if(blueprint && typeof blueprint === 'object'){
 			// layout assets according to blueprint
+			console.log('Loading state blueprint..');
+		}
+		else {
+			console.log('No blueprint supplied.');
 		}
 
 	},
