@@ -1,89 +1,112 @@
 
-/* AtelierJS - State Manager (StateMachine) and Asset Library (Souvenirs) classes for CreateJS 
+/* AtelierJS - A scene management module for CreateJS 
  * By Florian Brueckner http://bloomingbridges.co.uk/
  * MIT Licensed.
  */
 
+
+/* Souvenirs is a global object, responsible for preloading assets and 
+ * holding reusable objects such as BitmapAnimations
+ */
+
 (function(window) {
+
 	var Souvenirs = {
+
 		 assets: {},
 		sprites: {},
-		enqueue: function(id, path) {	
+
+		register: function(id, path) {	
+			// TODO Support more data types
 			this.assets[id] = loader.addImage(path);
-			console.log(id + ' has been enqueued for preloading.');
 		},
-		retrieve: function(id) {
-			if(id in this.assets){
-				return this.assets[id];
-			}
-			else {
-				throw "Asset doesn't exist :<";
-			}
-		},
-		register: function(id, sprite) {
+
+		add: function(id, sprite) {
 			this.sprites[id] = sprite;
-			console.log('Sprite has been registered.');
 		},
+
 		clone: function(id) {
 			if(id in this.sprites){
 				return this.sprites[id].clone(true);
 			}
 		}
+
 	};
+
 	window.Souvenirs = Souvenirs;
+
 }(window));
 
-var StateMachine = {
-	states: {},
-	currentState: {},
-	nextState: {},
-	transitioning: false,
-	registerStates: function(stateArray, autoStart) {
-		this.states = stateArray;
+
+/* Curator is (currently) a global object, responsible for the display and management of Scenes 
+ */
+
+var Curator = {
+
+	 		   scenes: {},
+		 currentScene: {},
+			nextScene: {},
+		transitioning: false,
+	transitionStarted: new signals.Signal(),
+	  transitionEnded: new signals.Signal(),
+		 sceneChanged: new signals.Signal(),
+
+	registerCollection: function(scenesArray, autoStart) {
+		this.scenes = scenesArray;
 		if(autoStart){
-			var firstState = (autoStart === true) ? Object.keys(this.states).shift() : autoStart;
-			this.switchTo(firstState);
+			var firstScene = (autoStart === true) ? Object.keys(this.scenes).shift() : autoStart;
+			this.switchTo(firstScene);
+			Ticker.addListener(this);
 		}
 	},
-	update: function() {
-		if(this.currentState instanceof State){
+
+	tick: function() {
+		if(this.currentScene instanceof Scene){
 			if(this.transitioning === true){
-				this.currentState.disappear();
-				this.nextState.appear();
+				this.currentScene.disappear();
+				this.nextScene.appear();
 			}
 			else if(this.transitioning === 'ready'){
 				this.transitioning = false;
 				console.log('Transition finished!');
-				stage.removeChild(StateMachine.currentState.subStage);
-				this.currentState = this.nextState;
+				stage.removeChild(Curator.currentScene.subStage);
+				this.currentScene = this.nextScene;
 			}
 			else {
-				this.currentState.update();
+				this.currentScene.update();
 			}
 		}
 	},
-	switchTo: function(newState) {
-		console.log('Switching to: ' + newState);
-		if(this.currentState instanceof State){
-			this.currentState.destroy();
+
+	switchTo: function(newScene) {
+		console.log('Switching to: ' + newScene);
+		if(this.currentScene instanceof Scene){
+			this.currentScene.destroy();
 		}
-		var state = this.states[newState].state;
-		var blueprint = this.states[newState].blueprint;
-		this.currentState = new state(blueprint);
+		var scene = this.scenes[newScene].scene;
+		var blueprint = this.scenes[newScene].blueprint;
+		this.currentScene = new scene(blueprint);
 	},
-	transitionTo: function(nextState) {
-		console.log('Transitioning to: ' + nextState);
-		var state = this.states[nextState].state;
-		var blueprint = this.states[nextState].blueprint;
-		this.nextState = new state(blueprint);
+
+	transitionTo: function(nextScene) {
+		console.log('Transitioning to: ' + nextScene);
+		var scene = this.scenes[nextScene].scene;
+		var blueprint = this.scenes[nextScene].blueprint;
+		this.nextScene = new scene(blueprint);
 		this.transitioning = true;
 	},
+
 	endTransition: function() {
 		this.transitioning = 'ready';
 	}
+
 };
 
-var State = Class.extend({
+
+/* Scene is the super class of all Scenes handled by the Curator
+ */
+
+var Scene = Class.extend({
 
 	init: function(blueprint) {
 		
@@ -92,7 +115,7 @@ var State = Class.extend({
 
 		if(blueprint && typeof blueprint === 'object'){
 			// layout assets according to blueprint
-			console.log('Loading state blueprint..');
+			console.log('Loading scene blueprint..');
 		}
 		else {
 			console.log('No blueprint supplied.');

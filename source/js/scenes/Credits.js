@@ -1,4 +1,4 @@
-var CreditsState = State.extend({
+var Credits = Scene.extend({
 
 	init: function( blueprint ){
 		this._super( blueprint );
@@ -28,14 +28,14 @@ var CreditsState = State.extend({
 		}
 		else{
 			$('#stage').click(function() {
-				Tween.get(StateMachine.currentState.subStage)
+				Tween.get(Curator.currentScene.subStage)
 					 .to({ y: -bounds.height, alpha: 0.0 }, 1000, Ease.cubicOut)
 					 .call(function() {
 						$('#stage').unbind('click');
-						StateMachine.switchTo('INTRO');
+						Curator.switchTo('INTRO');
 					});
 			});
-			StateMachine.endTransition();
+			Curator.endTransition();
 		}
 	},
 

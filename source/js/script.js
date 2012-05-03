@@ -25,23 +25,26 @@ var init = function() {
 	 */
 	assembleSprites();
 
-	/*  StateMachine.registerStates(stateArray, autoPlay);
-	 *  autoPlay can either be true (beginning), false or a key in stateArray e.g. 'CREDITS'
+	/*  Curator.registerStates(scenesArray, autoPlay);
+	 *  autoPlay can either be true (beginning), false or a key in sceneArray e.g. 'CREDITS'
 	 */
-	StateMachine.registerStates({ 
-		  'INTRO': { state: IntroState, blueprint: {} },
-		   'PLAY': { state: PlayState, blueprint: {} },
-		'CREDITS': { state: CreditsState }
+	Curator.registerCollection({ 
+		  'INTRO': { scene: Intro },
+		   'PLAY': { scene: Play, blueprint: {} },
+		'CREDITS': { scene: Credits }
 	}, true);
 
 	Ticker.addListener(window);
 	Ticker.useRAF = true;
-	Ticker.setInterval(1000/60);
+	Ticker.setFPS(60);
+	//Ticker.setInterval(1000/60);
 
 }
 
 function tick() {
-	StateMachine.update();
+	/* sb: hide */
+	$('header h1').html('FPS: ' + Math.floor(Ticker.getMeasuredFPS()));
+	/* sb: end */
 	stage.update();
 }
 
@@ -58,14 +61,14 @@ function assembleSprites() {
 	);
 	gir.snapToPixel = true;
 
-	Souvenirs.register('gir', gir);
+	Souvenirs.add('gir', gir);
 
 	/ * ==================================================================================== * /
 
 	var taco = new Bitmap( Souvenirs.assets.tacoImg );
 	taco.regX = 31; taco.regY = 50;
 
-	Souvenirs.register('taco', taco);
+	Souvenirs.add('taco', taco);
 
 	/ * ==================================================================================== * /
 
@@ -99,7 +102,7 @@ function assembleSprites() {
 	text2.alpha = 0.9;
 	credits.addChild(text2);
 
-	Souvenirs.register('credits', credits);
+	Souvenirs.add('credits', credits);
 
 }
 
@@ -113,8 +116,8 @@ function preloadAssets(onComplete) {
 
 canvas = document.getElementById('stage');
 if(canvas.getContext('2d')){
-	Souvenirs.enqueue('girSheetImg', './assets/girsheet.png');
-	Souvenirs.enqueue('tacoImg', './assets/taco.png');
+	Souvenirs.register('girSheetImg', './assets/girsheet.png');
+	Souvenirs.register('tacoImg', './assets/taco.png');
 	preloadAssets(false);
 }
 else {

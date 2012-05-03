@@ -46,7 +46,7 @@ canvas#stage {
   box-shadow: 0px 0px 12px #02ADDB;
   cursor: pointer, auto;
 }
-canvas#stage.taco {
+body.taco {
   cursor: url(../assets/taco.png), auto;
 }
 div.tag {

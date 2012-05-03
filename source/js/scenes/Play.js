@@ -1,4 +1,4 @@
-var PlayState = State.extend({
+var Play = Scene.extend({
 
 	init: function( blueprint ) {
 		this._super( blueprint );
@@ -12,12 +12,12 @@ var PlayState = State.extend({
 		// TODO Use Easel MouseEvent API instead?
 
 		$('#stage').click(function() {
-			$('#stage').removeClass('taco');
+			$('body').removeClass('taco');
 			$('#stage').unbind('click');
-			StateMachine.transitionTo('CREDITS');
+			Curator.transitionTo('CREDITS');
 		});
 
-		$('#stage').addClass('taco');
+		$('body').addClass('taco');
 	},
 
 	appear: function(){

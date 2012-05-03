@@ -56,7 +56,7 @@ p{line-height:1;margin:0}
 div#pageContainer{width:648px;margin:32px auto 0 auto}
 header{height:64px}
 canvas#stage{width:520px;height:390px;background-color:#efefef;box-shadow:0 0 12px #02addb;cursor:pointer,auto}
-canvas#stage.taco{cursor:url(../assets/taco.png),auto}
+body.taco{cursor:url(../assets/taco.png),auto}
 div.tag{width:520px;margin:0 auto}
 div.tag p.title{font-size:32px;font-weight:normal;text-align:right;margin-top:26px;margin-bottom:8px}
 div.tag p.short{font-size:18px;line-height:27px;text-align:right;margin-bottom:24px}

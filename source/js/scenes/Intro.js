@@ -1,4 +1,4 @@
-var IntroState = State.extend({
+var Intro = Scene.extend({
 
 	init: function( blueprint ){
 		this._super( blueprint );
@@ -19,7 +19,7 @@ var IntroState = State.extend({
 			this.gir.x -= 2;
 		}
 		else {
-			StateMachine.switchTo('PLAY');
+			Curator.switchTo('PLAY');
 		}
 	},
 
