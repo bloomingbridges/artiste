@@ -1,10 +1,19 @@
+html {
+  height: 100%;
+  background: #1b1b1b;
+  background-image: -moz-radial-gradient(50% 10%, circle closest-corner, #2b2b2b, #1b1b1b 100%);
+  background-image: -webkit-radial-gradient(50% 10%, circle closest-corner, #2b2b2b, #1b1b1b 100%);
+  background-image: -o-radial-gradient(50% 10%, circle closest-corner, #2b2b2b, #1b1b1b 100%);
+  background-image: -ms-radial-gradient(50% 10%, circle closest-corner, #2b2b2b, #1b1b1b 100%);
+  background-image: radial-gradient(50% 10%, circle closest-corner, #2b2b2b, #1b1b1b 100%);
+  background-repeat: no-repeat;
+}
 body {
   color: #fff;
   font-size: 1em;
   font-family: "Avenir Light", Helvetica, Arial, sans-serif;
-  background: #1b1b1b;
   text-align: center;
-  min-width: 648px;
+  min-width: 768px;
 }
 a {
   color: #02ADDB;
@@ -33,31 +42,31 @@ p {
   margin: 0;
 }
 div#pageContainer {
-  width: 648px;
-  margin: 32px auto 0 auto;
+  width: 768px;
+  margin: 32px auto 60px auto;
 }
 header {
   height: 64px;
 }
 canvas#stage {
-  width: 520px;
-  height: 390px;
+  width: 640px;
+  height: 400px;
   background-color: #efefef;
-  box-shadow: 0px 0px 12px #02ADDB;
+  box-shadow: 0px 0px 12px #111111 /*#02ADDB*/;
   cursor: pointer, auto;
 }
 body.taco {
   cursor: url(../assets/taco.png), auto;
 }
 div.tag {
-  width: 520px;
+  width: 640px;
   margin: 0 auto;
 }
 div.tag p.title {
   font-size: 32px;
   font-weight: normal;
   text-align: right;
-  margin-top: 26px;
+  margin-top: 48px;
   margin-bottom: 8px;
 }
 div.tag p.short {
@@ -81,13 +90,30 @@ div.tag details {
   margin-top: 3px;
 }
 footer {
-  width: 648px;
-  margin-top: 34px;
+  color: #333;
+  width: 768px;
+  margin: 33px 0;
+  float: left;
   border-top: 3px double #efefef;
+}
+footer:hover {
+  color: #999;
+}
+footer:hover a {
+  color: #02ADDB;
+}
+footer:hover a:hover {
+  color: #41D7FF;
 }
 footer p {
   font-size: 15px;
   line-height: 16px;
   margin-top: 11px;
   margin-bottom: 16px;
+}
+footer a {
+  color: #666;
+}
+footer a:hover {
+  color: #eee;
 }

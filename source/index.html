@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8" />
 		<title>l'artiste template</title>
 		<script type="text/javascript" src="http://code.createjs.com/easeljs-0.4.2.min.js"></script>
 		<script type="text/javascript" src="http://code.createjs.com/tweenjs-0.2.0.min.js"></script>
@@ -14,8 +15,11 @@
 		<!-- sb: end -->
 		<!-- sb: hide -->
 		<style type="text/css">
-			body { 
-				background: #1b1b1b	url(./images/vertical_rhythm.png) repeat left top;
+			html { 
+				background: transparent	url(./images/vertical_rhythm.png) repeat left top;
+			}
+			footer {
+				color: #efefef !important;
 			}
 		</style>
 		<!-- sb: end -->
@@ -23,22 +27,23 @@
 	<body>
 		<div id="pageContainer">
 			<header>
-				<h1><a href="http://github.com/bloomingbridges/artiste">l'artiste template</a></h1>
+				<h1><a href="http://github.com/bloomingbridges/artiste" title="l'artiste template on GitHub">présenté par l'artiste</a></h1>
 			</header>
 			<canvas id="stage"></canvas>
 			<div class="tag">
 				<p class="title">Gir loves tacos (2012)</p>
-				<p class="short">Animation on canvas</p>
+				<p class="short">Interactive animation on canvas</p>
 				<summary><cite>l'artiste</cite> is a minimal, (almost) production-ready template for HTML5 canvas development that comes with an aspect-ratio agnostic, vertically-ruled, centric layout and Grant Skinner's set of CreateJS libraries out of the box (via CDN).</summary>
 				<details>
-					Includes <a href="http://www.createjs.com/EaselJS">EaselJS 0.4.2</a>, <a href="www.createjs.com/TweenJS">TweenJS 0.2</a>, <a href="www.createjs.com/SoundJS">SoundJS 0.2</a> and <a href="http://thinkpixellab.com/pxloader/">PxLoader 0.1</a>.
+					Includes <a href="http://www.createjs.com/EaselJS">EaselJS 0.4.2</a>, <a href="www.createjs.com/TweenJS">TweenJS 0.2</a>, <a href="www.createjs.com/SoundJS">SoundJS 0.2</a>, AtelierJS and <a href="http://thinkpixellab.com/pxloader/">PxLoader 0.1</a>.
 				</details>
 			</div>
 			<footer>
 				<p>
-					Special thanks go to Grant Skinner (<a href="http://www.gskinner.com">@gskinner</a>), Justin Windle (<a href="http://www.soulwire.co.uk">@soulwire</a>), Alexis Sellier (<a href="http://www.twitter.com/cloudhead">@cloudhead</a>), Robert Bringhurst and of course Jhonen Vasquez.
+					Special thanks go to Grant Skinner (<a href="http://www.gskinner.com">@gskinner</a>), Justin Windle (<a href="http://www.soulwire.co.uk">@soulwire</a>),<wbr> Alexis Sellier (<a href="http://www.twitter.com/cloudhead">@cloudhead</a>), <wbr>Robert Bringhurst and of course Jhonen Vasquez.
 				</p>
 				<p>2012 <a href="http://www.bloomingbridges.co.uk">bloomingbridges</a></p>
+				<p></p>
 			</footer>
 		</div>
 

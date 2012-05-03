@@ -1,18 +1,28 @@
 
-@page_width:      520px;
+@page_width:      640px;
 @container_width: @page_width + 128px;
-@aspect_width:    4;
-@aspect_height:   3;
+@aspect_width:    16;
+@aspect_height:   10;
 @canvas_width:    @page_width;
 @canvas_height:   @aspect_height * @canvas_width / @aspect_width;
 
 @small_color:   #ddd;
 
+html {
+			   height: 100%;
+		   background: #1b1b1b;
+	 background-image: -moz-radial-gradient(50% 10%, circle closest-corner, #2b2b2b, #1b1b1b 100%);
+	 background-image: -webkit-radial-gradient(50% 10%, circle closest-corner, #2b2b2b, #1b1b1b 100%);
+	 background-image: -o-radial-gradient(50% 10%, circle closest-corner, #2b2b2b, #1b1b1b 100%);
+	 background-image: -ms-radial-gradient(50% 10%, circle closest-corner, #2b2b2b, #1b1b1b 100%);
+	 background-image: radial-gradient(50% 10%, circle closest-corner, #2b2b2b, #1b1b1b 100%);
+	background-repeat: no-repeat;
+}
+
 body {
 	      color: #fff;
 	  font-size: 1em;
 	font-family: "Avenir Light", Helvetica, Arial, sans-serif;
-	 background: #1b1b1b;
 	 text-align: center;
 	  min-width: @container_width;
 }
@@ -45,7 +55,7 @@ p {
 
 div#pageContainer {
      width: @container_width;
-    margin: 32px auto 0 auto;
+    margin: 32px auto 60px auto;
 }
 
 header {
@@ -56,7 +66,7 @@ canvas#stage {
 			   width: @canvas_width;
 			  height: @canvas_height;
 	background-color: #efefef;
-		  box-shadow: 0px 0px 12px #02ADDB;
+		  box-shadow: 0px 0px 12px #111/*#02ADDB*/;
 		  cursor: pointer, auto;
 }
 
@@ -103,15 +113,23 @@ div.tag {
 }
 
 footer {
+		 color: #333;
 	     width: @container_width;
-	margin-top: 34px;
+	margin: 33px 0;
+	float: left;
 	border-top: 3px double #efefef;
+	&:hover { color: #999; a { color: #02ADDB; &:hover { color: #41D7FF; } } }
 
 	p {
 		  font-size: 15px;
 		line-height: 16px;
 		 margin-top: 11px;
 		 margin-bottom: 16px;
+	}
+
+	a {
+		color: #666;
+		&:hover { color: #eee; }
 	}
 
 }
