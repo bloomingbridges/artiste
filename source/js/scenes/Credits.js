@@ -1,13 +1,12 @@
-var Credits = Scene.extend({
+var Credits = AtelierJS.Scene.extend({
 
-	init: function( blueprint ){
-		this._super( blueprint );
+	init: function(blueprint){
+		this._super(blueprint);
 
 		this.credits = Souvenirs.clone('credits');
 		this.subStage.x = bounds.width;
 		this.subStage.addChild(this.credits);
 
-		
 		this.tacoArray = [];
 		for(var t=0; t<=9; t++){
 			var tempTaco;
@@ -35,7 +34,7 @@ var Credits = Scene.extend({
 						Curator.switchTo('INTRO');
 					});
 			});
-			Curator.endTransition();
+			this.appeared.dispatch();
 		}
 	},
 

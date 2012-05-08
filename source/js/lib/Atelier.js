@@ -1,28 +1,44 @@
 
-/* AtelierJS - A scene management module for CreateJS 
- * By Florian Brueckner http://bloomingbridges.co.uk/
- * MIT Licensed.
+/*
+ * -----------------------------------------------------------------------------
+ | AtelierJS - A scene management module for CreateJS 
+ | By Florian Brueckner http://bloomingbridges.co.uk/
+ | MIT Licensed.
+ * -----------------------------------------------------------------------------
  */
 
-
-/* Souvenirs is a global object, responsible for preloading assets and 
- * holding reusable objects such as BitmapAnimations
- */
+// Declaring the AtelierJS namespace
+var AtelierJS = {};
 
 (function(window) {
 
-	var Souvenirs = {
+	/*
+	 * =========================================================================
+	 | Souvenirs
+	 * =========================================================================
+	 | is a global object, responsible for preloading assets and 
+	 | holding reusable objects such as BitmapAnimations         
+	 * -------------------------------------------------------------------------
+	 */
+
+	AtelierJS.Souvenirs = {
 
 		 assets: {},
 		sprites: {},
+		 sounds: {},
 
 		register: function(id, path) {	
-			// TODO Support more data types
+			// TODO Support more data types (e.g. sounds) //////////////////////
 			this.assets[id] = loader.addImage(path);
 		},
 
-		add: function(id, sprite) {
-			this.sprites[id] = sprite;
+		add: function(id, sprite, override) {
+			if(!this.sprites[id] || override){
+				this.sprites[id] = sprite;
+			}
+			else {
+				throw new Error("Souvenir '"+ id +"' already exists!");
+			}
 		},
 
 		clone: function(id) {
@@ -33,112 +49,236 @@
 
 	};
 
-	window.Souvenirs = Souvenirs;
+	window.Souvenirs = AtelierJS.Souvenirs;
+
+
+
+	/*
+	 * =========================================================================
+	 | Curator 
+	 * =========================================================================
+	 | is a global object, responsible for the display and management of Scenes 
+	 * -------------------------------------------------------------------------
+	 */
+
+	// TODO Allow for instantiation via canvas/stage reference /////////////////
+	// TODO Add modal scenes/overlays //////////////////////////////////////////
+
+	AtelierJS.Curator = {
+
+				   scenes: {},
+			 currentScene: {},
+				nextScene: {},
+			transitioning: false,
+
+		registerCollection: function(scenesArray, autoStart) {
+			this.scenes = scenesArray;
+			if(autoStart){
+				var firstScene = (autoStart === true) 
+					? Object.keys(this.scenes).shift() 
+					: autoStart;
+				this.switchTo(firstScene);
+				Ticker.addListener(this);
+			}
+		},
+
+		tick: function() {
+			if(this.currentScene instanceof AtelierJS.Scene){
+				if(this.transitioning === true){
+					this.currentScene.disappear();
+					this.nextScene.appear();
+				}
+				else if(this.transitioning === 'ready'){
+					this.transitioning = false;
+					/* sb: hide */
+					console.log('Transition finished!');
+					/* sb: end */
+					stage.removeChild(Curator.currentScene.subStage);
+					this.currentScene = this.nextScene;
+				}
+				else {
+					this.currentScene.update();
+				}
+			}
+		},
+
+		switchTo: function(newScene) {
+			/* sb: hide */
+			console.log('Switching to: ' + newScene);
+			/* sb: end */
+			if(this.currentScene instanceof AtelierJS.Scene){
+				this.currentScene.destroy();
+			}
+			var scene = this.scenes[newScene].scene;
+			var blueprint = this.scenes[newScene].blueprint;
+			this.currentScene = new scene(blueprint);
+		},
+
+		transitionTo: function(nextScene) {
+			/* sb: hide */
+			console.log('Transitioning to: ' + nextScene);
+			/* sb: end */
+			var scene = this.scenes[nextScene].scene;
+			var blueprint = this.scenes[nextScene].blueprint;
+			this.nextScene = new scene(blueprint);
+
+			this.currentScene.disappeared.add(this.endTransition);
+			this.nextScene.appeared.add(this.endTransition);
+			this.transitioning = true;
+		},
+
+		endTransition: function() {
+			/* sb: hide */
+			console.log("New scene has appeared.");
+			/* sb: end */
+			Curator.transitioning = 'ready';
+		}
+
+	};
+
+	window.Curator = AtelierJS.Curator;
+
+
+
+	/*
+	 * =========================================================================
+	 | StateMachine (Scene extension, properties will be merged)
+	 * =========================================================================
+	 | Class for managing different logical states in a Scene
+	 * -------------------------------------------------------------------------
+	 */
+
+	AtelierJS.StateMachine = function() {
+		
+		this.states = { 'OFF': 0, 'ON': 1, 'IN': 2, 'OUT': 3 };
+		this.currentState = 1;
+		this.changed = new signals.Signal();
+
+		this.registerStates = function(stateArray) {
+			for(var s = 0; s < stateArray.length; s++){
+				this.states[stateArray[s].toUpperCase()] = parseInt(s) + 4;
+			}
+		}
+
+		this.setState = function(state) {
+			this.changed.dispatch(state, this.currentState);
+			if(this.states[state]){
+				this.currentState = this.states[state];
+			}
+		}
+
+	};
+
+
+
+	/*
+	 * =========================================================================
+	 | Scene
+	 * =========================================================================
+	 | Super class of all Scenes handled by the Curator
+ 	 * -------------------------------------------------------------------------
+ 	 */
+
+	AtelierJS.Scene = Class.extend({
+
+		init: function(blueprint) {
+			
+			this.subStage = new Container();
+			stage.addChild(this.subStage);
+
+			this.appeared    = new signals.Signal();
+			this.disappeared = new signals.Signal();
+
+			if(blueprint){
+				if(typeof blueprint === 'object' && blueprint.info){
+					/* sb: hide */
+					console.log('Loading Scene blueprint..');
+					/* sb: end */
+					this.construct(blueprint);
+				}
+			}
+
+		},
+
+		construct: function(data) {
+			
+			for(x in data.actors) {
+				
+				var actor = data.actors[x];
+				var tmp = {};
+
+				if(Souvenirs.sprites[actor.sid]){
+					tmp = Souvenirs.clone(actor.sid);
+					/* sb: hide */
+					console.log("Using cached version ");
+					/* sb: end */
+				}
+				else {
+
+					if(actor.type === "Bitmap"){
+						tmp = new Bitmap(actor.src);
+						Souvenirs.add(actor.sid, tmp);
+					}
+					else if(actor.type === "BitmapAnimation"){
+						tmp = new BitmapAnimation(new SpriteSheet(actor.sheet));
+						Souvenirs.add(actor.sid, tmp);
+					}
+					else {
+						throw new Error("Type not (yet) recognised.");
+					}
+
+				}
+					
+				tmp.x = actor.x;
+				tmp.y = actor.y;
+
+				if(actor.play){
+					tmp.gotoAndPlay(actor.play);
+				}
+				else if(actor.stop){
+					tmp.gotoAndStop(actor.stop);
+				}
+
+				this[actor.id] = tmp;
+				this.subStage.addChild(tmp);
+
+			}
+
+		},
+
+		update: function() {
+			// I'm an animation loop, you should override me
+		},
+
+		onStateChanged: function(toState, fromState) {
+			console.log('State changed to: ' + toState);
+		},
+
+		appear: function() {
+			// I'm an animation loop, you might want to override me
+		},
+
+		disappear: function() {
+			// I'm an animation loop, you might want to override me
+		},
+
+		destroy: function() {
+			stage.removeChild(this.subStage);
+		},
+
+		registerStates: function(stateArray) {
+			if(!this.states){
+				var stateMachine = new AtelierJS.StateMachine();
+				this.states = stateMachine.states;
+				this.currentState = stateMachine.currentState;
+				this.changed = stateMachine.changed;
+				this.changed.add(this.onStateChanged);
+				this.registerStates = stateMachine.registerStates;
+				this.setState = stateMachine.setState;
+				this.registerStates(stateArray);
+			}
+		}
+
+	});
 
 }(window));
-
-
-/* Curator is (currently) a global object, responsible for the display and management of Scenes 
- */
-
-var Curator = {
-
-	 		   scenes: {},
-		 currentScene: {},
-			nextScene: {},
-		transitioning: false,
-	transitionStarted: new signals.Signal(),
-	  transitionEnded: new signals.Signal(),
-		 sceneChanged: new signals.Signal(),
-
-	registerCollection: function(scenesArray, autoStart) {
-		this.scenes = scenesArray;
-		if(autoStart){
-			var firstScene = (autoStart === true) ? Object.keys(this.scenes).shift() : autoStart;
-			this.switchTo(firstScene);
-			Ticker.addListener(this);
-		}
-	},
-
-	tick: function() {
-		if(this.currentScene instanceof Scene){
-			if(this.transitioning === true){
-				this.currentScene.disappear();
-				this.nextScene.appear();
-			}
-			else if(this.transitioning === 'ready'){
-				this.transitioning = false;
-				console.log('Transition finished!');
-				stage.removeChild(Curator.currentScene.subStage);
-				this.currentScene = this.nextScene;
-			}
-			else {
-				this.currentScene.update();
-			}
-		}
-	},
-
-	switchTo: function(newScene) {
-		console.log('Switching to: ' + newScene);
-		if(this.currentScene instanceof Scene){
-			this.currentScene.destroy();
-		}
-		var scene = this.scenes[newScene].scene;
-		var blueprint = this.scenes[newScene].blueprint;
-		this.currentScene = new scene(blueprint);
-	},
-
-	transitionTo: function(nextScene) {
-		console.log('Transitioning to: ' + nextScene);
-		var scene = this.scenes[nextScene].scene;
-		var blueprint = this.scenes[nextScene].blueprint;
-		this.nextScene = new scene(blueprint);
-		this.transitioning = true;
-	},
-
-	endTransition: function() {
-		this.transitioning = 'ready';
-	}
-
-};
-
-
-/* Scene is the super class of all Scenes handled by the Curator
- */
-
-var Scene = Class.extend({
-
-	init: function(blueprint) {
-		
-		this.subStage = new Container();
-		stage.addChild(this.subStage);
-
-		if(blueprint && typeof blueprint === 'object'){
-			// layout assets according to blueprint
-			console.log('Loading scene blueprint..');
-		}
-		else {
-			console.log('No blueprint supplied.');
-		}
-
-	},
-
-	update: function() {
-		// I'm an animation loop, you should override me
-	},
-
-	appear: function() {
-		// I'm an animation loop, you might want to override me
-	},
-
-	disappear: function() {
-		// I'm an animation loop, you might want to override me
-	},
-
-	destroy: function() {
-		//subStage.removeAllChildren();
-		stage.removeChild(this.subStage);
-	}
-
-});
-

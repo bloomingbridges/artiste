@@ -1,7 +1,7 @@
-var Play = Scene.extend({
+var Play = AtelierJS.Scene.extend({
 
-	init: function( blueprint ) {
-		this._super( blueprint );
+	init: function(blueprint) {
+		this._super(blueprint);
 
 		this.gir = Souvenirs.clone('gir');
 		this.gir.x = bounds.width / 2;
@@ -18,6 +18,7 @@ var Play = Scene.extend({
 		});
 
 		$('body').addClass('taco');
+
 	},
 
 	appear: function(){

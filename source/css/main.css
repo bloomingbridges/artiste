@@ -11,7 +11,7 @@ html {
 body {
   color: #fff;
   font-size: 1em;
-  font-family: "Avenir Light", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   text-align: center;
   min-width: 768px;
 }
@@ -54,9 +54,10 @@ canvas#stage {
   background-color: #efefef;
   box-shadow: 0px 0px 12px #111111 /*#02ADDB*/;
   cursor: pointer, auto;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body.taco {
-  cursor: url(../assets/taco.png), auto;
+  cursor: url(../assets/taco.png), pointer;
 }
 div.tag {
   width: 640px;

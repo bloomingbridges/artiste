@@ -22,7 +22,7 @@ html {
 body {
 	      color: #fff;
 	  font-size: 1em;
-	font-family: "Avenir Light", Helvetica, Arial, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	 text-align: center;
 	  min-width: @container_width;
 }
@@ -67,11 +67,12 @@ canvas#stage {
 			  height: @canvas_height;
 	background-color: #efefef;
 		  box-shadow: 0px 0px 12px #111/*#02ADDB*/;
-		  cursor: pointer, auto;
+		      cursor: pointer, auto;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 body.taco {
-	cursor: url(../assets/taco.png), auto;
+	cursor: url(../assets/taco.png), pointer;
 }
 
 div.tag {
@@ -115,8 +116,8 @@ div.tag {
 footer {
 		 color: #333;
 	     width: @container_width;
-	margin: 33px 0;
-	float: left;
+		margin: 33px 0;
+		 float: left;
 	border-top: 3px double #efefef;
 	&:hover { color: #999; a { color: #02ADDB; &:hover { color: #41D7FF; } } }
 

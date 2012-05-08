@@ -47,7 +47,7 @@ input[type="search"]::-webkit-search-decoration,input[type="search"]::-webkit-se
 button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
 textarea{overflow:auto;vertical-align:top}
 table{border-collapse:collapse;border-spacing:0}html{height:100%;background:#1b1b1b;background-image:-moz-radial-gradient(50% 10%,circle closest-corner,#2b2b2b,#1b1b1b 100%);background-image:-webkit-radial-gradient(50% 10%,circle closest-corner,#2b2b2b,#1b1b1b 100%);background-image:-o-radial-gradient(50% 10%,circle closest-corner,#2b2b2b,#1b1b1b 100%);background-image:-ms-radial-gradient(50% 10%,circle closest-corner,#2b2b2b,#1b1b1b 100%);background-image:radial-gradient(50% 10%,circle closest-corner,#2b2b2b,#1b1b1b 100%);background-repeat:no-repeat}
-body{color:#fff;font-size:1em;font-family:"Avenir Light",Helvetica,Arial,sans-serif;text-align:center;min-width:768px}
+body{color:#fff;font-size:1em;font-family:Helvetica,Arial,sans-serif;text-align:center;min-width:768px}
 a{color:#02addb;text-decoration:none}
 a:hover{color:#41d7ff}
 h1{font-family:"Courier New","Courier",monospace;font-size:32px;font-weight:normal;line-height:46px;margin:0 0 18px 0}
@@ -56,8 +56,8 @@ h1 a:hover{color:#eee;text-shadow:0 0 5px #41d7ff}
 p{line-height:1;margin:0}
 div#pageContainer{width:768px;margin:32px auto 60px auto}
 header{height:64px}
-canvas#stage{width:640px;height:400px;background-color:#efefef;box-shadow:0 0 12px #111;cursor:pointer,auto}
-body.taco{cursor:url(../assets/taco.png),auto}
+canvas#stage{width:640px;height:400px;background-color:#efefef;box-shadow:0 0 12px #111;cursor:pointer,auto;-webkit-tap-highlight-color:rgba(0,0,0,0)}
+body.taco{cursor:url(../assets/taco.png),pointer}
 div.tag{width:640px;margin:0 auto}
 div.tag p.title{font-size:32px;font-weight:normal;text-align:right;margin-top:48px;margin-bottom:8px}
 div.tag p.short{font-size:18px;line-height:27px;text-align:right;margin-bottom:24px}
