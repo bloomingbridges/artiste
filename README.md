@@ -5,7 +5,7 @@ for HTML5 canvas development using Grant Skinner's CreateJS suite
 -----------------------------------------------------------------
 
 --> [Springboard](https://github.com/soulwire/Springboard)  
---> [CreateJS repo](https://github.com/CreateJS) 
+--> [CreateJS](https://github.com/CreateJS) 
 
 ### Summary
 
@@ -36,12 +36,12 @@ The AtelierJS API is still subject to change and I don't currently provide any d
 
 ### AtelierJS
 
-_AtelierJS_ is essentially a framework that comes with an asset library (Souvenirs) and a scene manager (Curator) which allow you to write and switch/transition between self-contained Scenes. This should get you started in no time.
+_AtelierJS_ is essentially a framework that comes with an asset library (Souvenirs) and a scene manager (Curator) which allow you to write and switch/transition between self-contained Scenes. Scenes are JS objects with their own animation loop, 'DisplayList' and state machine. If you come from a Flash development background, then this should get you started in no time.
 
 ### What is still missing (/from _AtelierJS_)?
 
 * The possility to address multiple canvasses on a single page
-* Scene blueprint spec and loading mechanism (for Scene-creation via a 3rd-party application)
+* Full Scene blueprint specification (so Scenes can be layed out via a 3rd party application)
 * A comprehensive example for preloading and playing back sounds
 * Presets for transitions between Scenes
 * Go full-screen button for browsers that support the Fullscreen API

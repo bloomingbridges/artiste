@@ -34,25 +34,84 @@ var init = function() {
 	 * -------------------------------------------------------------------------
 	 */
 	var IntroBlueprint = {
-		"info": {
-			"scene": "Intro",
-			"description": "A single blueprint that combines Intro and Play."
+		"info": 
+		{
+				  "scene": "Intro",
+			"description": "A single blueprint that combines Intro and Play.",
+				 "states": [ "INTRO", "PLAY" ]
 		},
-		"actors": [
+		"actors": 
+		[
 			{
-				  "sid": "gir",
-				   "id": "gir",
-				 "type": "BitmapAnimation",
-				"sheet": {
-						"images": [ Souvenirs.assets.girSheetImg ],
-						"frames": { "width": 180, "height": 244, "count": 9,
-									"regX": 90, "regY": 122 },
-					"animations": { "idle": [0], "walk": [0, 8, true, 2] }
+				        "sid": "gir",
+				         "id": "gir",
+				       "type": "MovieClip",
+				"spritesheet": 
+				{
+				 	 "images": [ Souvenirs.assets.girSheetImg ],
+					 "frames":
+					{ 
+						 "width": 180, 
+						"height": 244, 
+						 "count": 9,
+						  "regX": 90, 
+						  "regY": 122 
 					},
-				    "x": 730,
-				    "y": 200,
-				 "play": "walk",
-				 "snap": true
+				 "animations": 
+				 	{ 
+				    	  "idle": [ 0 ], 
+				    	  "walk": [ 0, 8, true, 2 ] 
+				   	}
+				},
+				          "x": 730,
+				          "y": 200,
+				         "vX": 2,
+				       "play": "walk",
+				    "visible": true,
+				       "snap": true
+			}
+		]
+	}
+
+	/*
+	 * -------------------------------------------------------------------------
+	 | Instead of duplicating 'actor' nodes AtelierJS allows you to define a
+	 | group of instances via the 'id' property and the following syntax:
+	 |
+	 |     "id": "nameOfTheArray[amountOfInstances]"
+	 |
+	 | To define a list of individual x,y positions use Array literals:
+	 |     
+	 |     "x": [1,2,3,4,5], 
+	 |     "y": [5,4,3,2,1]
+	 |
+	 | => Results in position pairs such as [1,5], [2,4], [3,3], etc.
+	 |
+	 | Alternatively you can define a 'zone' rectangle in which the instances
+	 | are randomly positioned in (the 'zone' property is dominant here):
+	 |
+	 |     "zone": { "x": 0, "y": -150, "width": 800, "height": 150 } 
+	 * -------------------------------------------------------------------------
+	 */
+	var CreditsBlueprint = {
+		"info": 
+		{
+				  "scene": "Credits",
+			"description": "Scene of the flying tacos"
+		},
+		"actors": 
+		[
+			{
+				     "sid": "taco",
+				      "id": "tacoArray[10]",
+				    "type": "Sprite",
+				     "img": Souvenirs.assets.tacoImg,
+				    "regX": 31,
+				    "regY": 50,
+					   "y": 500,
+					  "vY": 10,
+				 	"zone": { "x": 45, "y": -200, "width": 680 },
+				 "visible": true
 			}
 		]
 	}
@@ -66,7 +125,7 @@ var init = function() {
 	Curator.registerCollection({ 
 		  'INTRO': { scene: Intro, blueprint: IntroBlueprint },
 		   //'PLAY': { scene: Play },
-		'CREDITS': { scene: Credits }
+		'CREDITS': { scene: Credits, blueprint: CreditsBlueprint }
 	}, true);
 
 	Ticker.addListener(window);

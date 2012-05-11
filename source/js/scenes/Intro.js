@@ -25,7 +25,7 @@ var Intro = AtelierJS.Scene.extend({
 		switch(this.currentState){
 			case this.states.INTRO:
 				if(this.gir.x > bounds.width / 2){
-					this.gir.x -= 2;
+					this.gir.x -= this.gir.vX;
 				}
 				else {
 					this.setState('PLAY');

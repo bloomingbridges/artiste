@@ -3,22 +3,10 @@ var Credits = AtelierJS.Scene.extend({
 	init: function(blueprint){
 		this._super(blueprint);
 
-		this.credits = Souvenirs.clone('credits');
 		this.subStage.x = bounds.width;
+		this.credits = Souvenirs.clone('credits');
+		this.credits.alpha = 0.5;
 		this.subStage.addChild(this.credits);
-
-		this.tacoArray = [];
-		for(var t=0; t<=9; t++){
-			var tempTaco;
-			tempTaco = Souvenirs.clone('taco');
-			tempTaco.x = 45 + Math.random() * (bounds.width - 120);
-			tempTaco.y = -100;
-			tempTaco.vY = 5 + Math.floor(Math.random() * 5);
-			tempTaco.rotation = Math.floor(Math.random() * 360);
-			this.tacoArray.push(tempTaco);
-			this.subStage.addChild(this.tacoArray[t]);
-		}
-
 	},
 	
 	appear: function(){
@@ -43,12 +31,16 @@ var Credits = AtelierJS.Scene.extend({
 			var tempTaco = this.tacoArray[t];
 			tempTaco.y += tempTaco.vY;
 			if(tempTaco.y > bounds.height * 2){
-				tempTaco.x = 45 + Math.random() * (bounds.width - 120);
-				tempTaco.y = -100;
-				tempTaco.vY = 5 + Math.floor(Math.random() * 5);
-				tempTaco.rotation = Math.floor(Math.random() * 360);
+				this.positionTaco(tempTaco);
 			}
 		}
+	},
+
+	positionTaco: function(taco){
+		taco.x = 45 + Math.random() * (bounds.width - 120);
+		taco.y = -100;
+		taco.vY = 5 + Math.floor(Math.random() * 5);
+		taco.rotation = Math.floor(Math.random() * 360);
 	},
 
 	disappear: function(){

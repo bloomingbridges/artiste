@@ -150,13 +150,13 @@ var AtelierJS = {};
 
 	AtelierJS.StateMachine = function() {
 		
-		this.states = { 'OFF': 0, 'ON': 1, 'IN': 2, 'OUT': 3 };
+		this.states = { 'OFF': 0, 'ON': 1 };
 		this.currentState = 1;
 		this.changed = new signals.Signal();
 
 		this.registerStates = function(stateArray) {
 			for(var s = 0; s < stateArray.length; s++){
-				this.states[stateArray[s].toUpperCase()] = parseInt(s) + 4;
+				this.states[stateArray[s].toUpperCase()] = parseInt(s) + 2;
 			}
 		}
 
@@ -210,40 +210,69 @@ var AtelierJS = {};
 				if(Souvenirs.sprites[actor.sid]){
 					tmp = Souvenirs.clone(actor.sid);
 					/* sb: hide */
-					console.log("Using cached version ");
+					console.log("Using cached version");
 					/* sb: end */
 				}
 				else {
-
-					if(actor.type === "Bitmap"){
-						tmp = new Bitmap(actor.src);
-						Souvenirs.add(actor.sid, tmp);
-					}
-					else if(actor.type === "BitmapAnimation"){
-						tmp = new BitmapAnimation(new SpriteSheet(actor.sheet));
-						Souvenirs.add(actor.sid, tmp);
-					}
-					else {
-						throw new Error("Type not (yet) recognised.");
-					}
-
+					tmp = this.forge(actor);
+					Souvenirs.add(actor.sid, tmp);
 				}
 					
-				tmp.x = actor.x;
-				tmp.y = actor.y;
-
-				if(actor.play){
-					tmp.gotoAndPlay(actor.play);
+				var pattern = new RegExp(/(\w+)\[(\d+?)\]/);
+				var amount = pattern.exec(actor.id);
+				if(amount && amount[2] > 1){
+					/* sb: hide */
+					console.log('Adding ' + amount[2] + ' ' + actor.type + 's');
+					/* sb: end */
+					var index = pattern.exec(actor.id)[1];
+					this[index] = [];
+					for(var v=0; v<amount[2]; v++){
+						tmp = Souvenirs.clone(actor.sid);
+						this[index][v] = this.place(tmp, actor);
+					}
 				}
-				else if(actor.stop){
-					tmp.gotoAndStop(actor.stop);
+				else {
+					this[actor.id] = this.place(tmp, actor);
 				}
-
-				this[actor.id] = tmp;
-				this.subStage.addChild(tmp);
 
 			}
 
+		},
+
+		forge: function(actor) {
+			switch(true) {
+				case (actor.type === "Layer"):
+					return new Container();
+				case (actor.type === "Sprite"):
+					return new Bitmap(actor.img);
+				case (actor.type === "MovieClip"):
+					return new BitmapAnimation(
+						new SpriteSheet(actor.spritesheet)
+					);
+				default:
+					throw new Error("Type not (yet) recognised.");
+			}
+		},
+
+		place: function(tmp, actor) {
+			tmp.x  = (actor.hasOwnProperty('x')) ? actor.x : 0;
+			tmp.y  = (actor.hasOwnProperty('y')) ? actor.y : 0;
+			tmp.vX = (actor.hasOwnProperty('vX')) ? actor.vX : 0;
+			tmp.vY = (actor.hasOwnProperty('vY')) ? actor.vY : 0;
+			tmp.visible = (actor.hasOwnProperty('visible')) 
+						? actor.visible 
+						: true;
+			tmp.snapToPixel = (actor.hasOwnProperty('snapToPixel')) 
+						? actor.snapToPixel 
+						: true;
+			if(actor.hasOwnProperty('play')){
+				tmp.gotoAndPlay(actor.play);
+			}
+			else if(actor.stop){
+				tmp.gotoAndStop(actor.stop);
+			}
+			this.subStage.addChild(tmp);
+			return tmp;
 		},
 
 		update: function() {
@@ -251,7 +280,9 @@ var AtelierJS = {};
 		},
 
 		onStateChanged: function(toState, fromState) {
+			/* sb: hide */
 			console.log('State changed to: ' + toState);
+			/* sb: end */
 		},
 
 		appear: function() {
