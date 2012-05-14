@@ -1,12 +1,20 @@
 var Credits = AtelierJS.Scene.extend({
 
-	init: function(blueprint){
-		this._super(blueprint);
+	init: function(){
+		this._super();
 
 		this.subStage.x = bounds.width;
 		this.credits = Souvenirs.clone('credits');
-		this.credits.alpha = 0.5;
-		this.subStage.addChild(this.credits);
+		this.addChild(this.credits);
+
+		this.tacoArray = [];
+		for(var t=0; t<=9; t++){
+			var tempTaco = Souvenirs.clone('taco');
+			this.positionTaco(tempTaco)
+			this.tacoArray.push(tempTaco);
+			this.addChild(tempTaco);
+		}
+
 	},
 	
 	appear: function(){

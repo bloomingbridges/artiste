@@ -1,12 +1,12 @@
 var Play = AtelierJS.Scene.extend({
 
-	init: function(blueprint) {
-		this._super(blueprint);
+	init: function() {
+		this._super();
 
 		this.gir = Souvenirs.clone('gir');
 		this.gir.x = bounds.width / 2;
 		this.gir.y = bounds.height / 2;
-		this.subStage.addChild(this.gir);
+		this.addChild(this.gir);
 		this.gir.gotoAndPlay('idle');
 		
 		// TODO Use Easel MouseEvent API instead?
