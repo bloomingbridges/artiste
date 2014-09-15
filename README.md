@@ -20,15 +20,11 @@ It uses typography as its grid (vertical rhythm) and - should you decide to work
 
 __Before..__
 
-[![Before build][id_2]][id_1]
-[id_1]: http://www.bloomingbridges.co.uk/dump/artiste/source/
-[id_2]: http://dl.dropbox.com/u/998319/artiste_before.png
+![Before build](http://dl.dropbox.com/u/998319/linked/artiste_before.png)
 
 __and After the build process:__
 
-[![After build][id_4]][id_3]
-[id_3]: http://www.bloomingbridges.co.uk/dump/artiste/deploy/
-[id_4]: http://dl.dropbox.com/u/998319/artiste_after.png
+![After build](http://dl.dropbox.com/u/998319/linked/artiste_after.png)
 
 ### What is still missing?
 
